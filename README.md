@@ -109,6 +109,7 @@ Verify that the older sanity check still works.
 
 # Resilience:
 There were a few key areas that needed special error handling:
+
 1. Tweepy would not retry error status 104.  So I added a `try`/`except` inside an infinite loop around each REST API call.  Should a 104 be encountered, the call would continue the infinite loop, effectively retrying a call for that cursor position while allowing Tweepy to reopen a connection.
 2. Tweepy raised `TweepError`s with something like 'Authorization denied' for private timelines.  When these were encountered, the desired behavior is to move to the next user.  The exception handler would skip additional processing by breaking out of the infinite loop around the twitter call.
 3. When making Twitter API calls in the body of a loop over users, the calls may block for long times to handle rate limits.  If I were looping over a pymongo cursor, it would time out.  To avoid that, I would fetch the list of users to a python variable first, and loop over that to make the Twitter API calls.
