@@ -13,7 +13,7 @@
 2.2.4: [Sentiment analysis](#toc_2.2.4)  
 2.3: [Storing and Retrieving Task](#toc_2.3)  
 2.3.1: [Backup & Restore](#toc_2.3.1)  
-3: [Resilience](#toc_3)
+3: [Resilience](#toc_3)  
 4: [Lexical Diversity](#toc_4)
 
 # 1: Database Dumps
