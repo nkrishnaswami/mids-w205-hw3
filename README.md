@@ -1,19 +1,29 @@
-Homework 3 Submission
-==
-Table of Contents
-==
+# Homework 3 Submission
+# Table of Contents
 1: [Database Dumps](#toc_1)
+
 2: [Implementation Notes](#toc_2)
+
 2.1: [Storing Tasks](#toc_2.1)
+
 2.1.1: [Save tweets from twitter to MongoDB](#toc_2.1.1)
+
 2.1.2: [Copy chunked tweets from HW 2 to MongoDB](#toc_2.1.2)
+
 2.2: [Retrieving and Analyzing Tasks](#toc_2.2)
+
 2.2.1: [Top Retweets](#toc_2.2.1)
+
 2.2.2: [Lexical Diversity](#toc_2.2.2)
+
 2.2.3: [Track unfollows](#toc_2.2.3)
+
 2.2.4: [Sentiment analysis](#toc_2.2.4)
+
 2.3: [Storing and Retrieving Task](#toc_2.3)
+
 2.3.1: [Backup & Restore](#toc_2.3.1)
+
 3: [Resilience](#toc_3)
 
 # Database Dumps
@@ -37,6 +47,7 @@ This section reproduces (at an additional level of nesting) the contents of [pro
 ### 2.1.2: Copy chunked tweets from HW 2 to MongoDB
 
 > Write a python program to automatically retrieve and store the JSON files (associated with the tweets that include #NBAFinals2015 hashtag and the tweets that include #Warriors hashtag) returned by the twitter REST api in a MongoDB database called db_restT. 
+
 **Notes**: These are in files [1.1_acq.py](1.1_acq.py) and [1.2_s3tomongo.py](1.2_s3tomongo.py).
 
 The first uses much of the code from Assignment 2, with the addition of a `MongoDBSink` in `sinks.py` to store tweets to a specified database and collection.
@@ -51,6 +62,7 @@ The second simply reads the files from S3 to a string, uses `json.loads` to read
 ### 2.2.1: Top Retweets
 
 > Analyze the tweets stored in db_tweets by finding the top 30 retweets as well as their associated usernames (users authored them) and the locations of users.
+
 **Notes**: Creating an index on retweeted_status.id will let us avoid both a collection scan and a sort when grouping retweets by id.
 We process the results of the aggregation pipeline by printing each result and adding each user ID to a set of most RTed users
 
@@ -60,6 +72,7 @@ We process the results of the aggregation pipeline by printing each result and a
 > Compute the lexical diversity of the texts of the tweets for each of the users in db_restT and store the results back to Mongodb. To compute the lexical diversity of a user, you need to find all the tweets of a particular user (a user's tweets corpus), find the number of unique words in the user's tweets corpus, and divide that number by the total number of words in the user's tweets corpus.
 > 
 > You need to create a collection with appropriate structure for storing the results of your analysis.
+
 **Notes**: This is the first time we're looking at db_restT, so we start by indexing the tweet collection by user ID for subsequent aggregation on that field.
 First, fetch each user's tweets and store them into `db_restT.user_tweets`, omitting RTs since they are not the user's text.
 Storing them permits comparison of different tokenizing methods and avoids the need to restart in case of failure.
@@ -79,6 +92,7 @@ Show the collection row counts as quick sanity check, and finally plot the lexic
 ### 2.2.3: Track unfollows
 
 > Write a python program to create a db called db_followers that stores all the followers for all the users that you find in task 2.1. Then, write a program to find the un-followed friends after a week for the top 10 users( users that have the highest number of followers in task 2.1) since the time that you extracted the tweets. In other words, you need to look for the people following the top 10 users at time X (the time that you extracted the tweets) and then look at the people following the same top 10 users at a later time Y (one-week after X) to see who stopped following the top 10 users.
+
 **Notes**: First, make a db/table of top RT'ed users in which to store follower stats,
 Then fetch the list of followers for the top 10 by followers.
 The API rate limit is 15 calls per hour, and each call can return 5000 followers.  While this may compromise the efficacy of the assignment there are over 19 million followers for these users, I will only fetch the first 10k followers to avoid spending 11 days fetching all the followers (particularly since they would have changed in that time).
@@ -98,6 +112,7 @@ Despite changes to the follower counts, there were no IDs in the final set not i
 ### 2.3.1: Backup & Restore
 
 > Write a python program to create and store the backups of both db_tweets and db_restT to S3. It also should have a capability of loading the backups if necessary.
+
 **Notes**: To backup a database, call `mongodump` to dump the database BSON files, compress them, and copy the archive to a user-provided S3 bucket.
 
 For this assignment, I am using s3 bucket `nkrishna-mids205-hw3`.  I think I forgot to grant ListBucket privs last time, so I have added them to this bucket as well as GetObject.
