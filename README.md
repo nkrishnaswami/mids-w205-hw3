@@ -93,6 +93,12 @@ Despite changes to the follower counts, there were no IDs in the final set not i
 
 > (Bonus task) Write a python program and use NLTK to analyze the top 30 retweets of task 2.1 as positive or negative (sentiment analysis). This is the bonus part of the assignment.
 
+**Notes**: I started to do this by fetching a corpus of sentiment-classified tweets from
+[http://thinknook.com/twitter-sentiment-analysis-training-corpus-dataset-2012-09-22/](http://thinknook.com/twitter-sentiment-analysis-training-corpus-dataset-2012-09-22/). (I have omitted this from the git push due to size.).  
+I had planned on incorporating ideas from  Kiritchenko et al, Sentiment Analysis of Short Informal Texts to select features: stemmed tokens, POS-tagged tokens, final hashtags,n-grams, etc.  
+As a classifier, I planned to use a random forest  from `scikit-learn`.  
+I did not have time to complete this activity, howerver.
+
 <a name='toc_2.3'></a>
 ## 2.3: Storing and Retrieving Task
 
