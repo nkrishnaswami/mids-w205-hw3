@@ -1,29 +1,18 @@
 # Homework 3 Submission
 # Table of Contents
-1: [Database Dumps](#toc_1)
 
-2: [Implementation Notes](#toc_2)
-
-2.1: [Storing Tasks](#toc_2.1)
-
-2.1.1: [Save tweets from twitter to MongoDB](#toc_2.1.1)
-
-2.1.2: [Copy chunked tweets from HW 2 to MongoDB](#toc_2.1.2)
-
-2.2: [Retrieving and Analyzing Tasks](#toc_2.2)
-
-2.2.1: [Top Retweets](#toc_2.2.1)
-
-2.2.2: [Lexical Diversity](#toc_2.2.2)
-
-2.2.3: [Track unfollows](#toc_2.2.3)
-
-2.2.4: [Sentiment analysis](#toc_2.2.4)
-
-2.3: [Storing and Retrieving Task](#toc_2.3)
-
-2.3.1: [Backup & Restore](#toc_2.3.1)
-
+1: [Database Dumps](#toc_1)  
+2: [Implementation Notes](#toc_2)  
+2.1: [Storing Tasks](#toc_2.1)  
+2.1.1: [Save tweets from twitter to MongoDB](#toc_2.1.1)  
+2.1.2: [Copy chunked tweets from HW 2 to MongoDB](#toc_2.1.2)  
+2.2: [Retrieving and Analyzing Tasks](#toc_2.2)  
+2.2.1: [Top Retweets](#toc_2.2.1)  
+2.2.2: [Lexical Diversity](#toc_2.2.2)  
+2.2.3: [Track unfollows](#toc_2.2.3)  
+2.2.4: [Sentiment analysis](#toc_2.2.4)  
+2.3: [Storing and Retrieving Task](#toc_2.3)  
+2.3.1: [Backup & Restore](#toc_2.3.1)  
 3: [Resilience](#toc_3)
 
 # Database Dumps
@@ -48,15 +37,12 @@ This section reproduces (at an additional level of nesting) the contents of [pro
 
 > Write a python program to automatically retrieve and store the JSON files (associated with the tweets that include #NBAFinals2015 hashtag and the tweets that include #Warriors hashtag) returned by the twitter REST api in a MongoDB database called db_restT. 
 
-**Notes**: These are in files [1.1_acq.py](1.1_acq.py) and [1.2_s3tomongo.py](1.2_s3tomongo.py).
-
-The first uses much of the code from Assignment 2, with the addition of a `MongoDBSink` in `sinks.py` to store tweets to a specified database and collection.
-
+**Notes**: These are in files [1.1_acq.py](1.1_acq.py) and [1.2_s3tomongo.py](1.2_s3tomongo.py).  
+The first uses much of the code from Assignment 2, with the addition of a `MongoDBSink` in `sinks.py` to store tweets to a specified database and collection.  
 The second simply reads the files from S3 to a string, uses `json.loads` to read the contents into an array, and writes the tweets with `insert_many`.
 
 <a name='toc_2.2'></a>
 ## 2.2: Retrieving and Analyzing Tasks
-
 
 <a name='toc_2.2.1'></a>
 ### 2.2.1: Top Retweets
@@ -84,8 +70,8 @@ The `user_timeline` API per-call count limit is 200 statuses, and the call canno
 Some notes on implementation:
 * it is necessary to retrieve the user IDs from mongodb prior to the loop on `user_timeline` calls.  Otherwise the mongodb cursor in the outer loop will become invalue due to twitter rate limit waits.
 * `tweepy.API` has parameters to indicate which API status codes should be retried, but due to implementation details, 104 (connection reset by peer) errors get thrown.  These can be caught, and the `TweepError.response` object will be present, with member `status` set to 104. We can simply retry these, as the library will create a new connection.
-* Users with private timelines will fail with an \"authorization failed\" error, with no `response`.  We found their posts in the DB by hashtag, but are not permitted to enumerate their tweets. For these and all other exceptions, we can simply try going on to the next user.  This is a bit fragile, and will misbehave if, eg, there are `pymongo` exceptions.
-Next, we analyze each user's tweets for lexical diversity.  I split on `\\W+` (one or more non-\"word\" character) to tokenize.  This is not always appropriate since we often wish to distinguish hashtags and mentions from other text.  However, since we are interested in words, this seems reasonable here.
+* Users with private timelines will fail with an "authorization failed" error, with no `response`.  We found their posts in the DB by hashtag, but are not permitted to enumerate their tweets. For these and all other exceptions, we can simply try going on to the next user.  This is a bit fragile, and will misbehave if, eg, there are `pymongo` exceptions.
+Next, we analyze each user's tweets for lexical diversity.  I split on `\W+` (one or more non-"word" character) to tokenize.  This is not always appropriate since we often wish to distinguish hashtags and mentions from other text.  However, since we are interested in words, this seems reasonable here.
 Show the collection row counts as quick sanity check, and finally plot the lexical diversity.
 
 <a name='toc_2.2.3'></a>
