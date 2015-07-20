@@ -31,14 +31,16 @@ This section reproduces (at an additional level of nesting) the contents of [pro
 
 > Write a python program to automatically retrieve and store the JSON files (associated with the tweets that include #NBAFinals2015 hashtag and the tweets that include #Warriors hashtag) returned by the twitter REST api in a MongoDB database called db_restT. 
 
+**Notes**: The code is in [1.1_acq.py](1.1_acq.py).  
+This reuses much of the code from Assignment 2, with the addition of a `MongoDBSink` in `sinks.py` to store tweets to a specified database and collection.
+
 
 <a name='toc_2.1.2'></a>
 ### 2.1.2: Copy chunked tweets from HW 2 to MongoDB
 
 > Write a python program to automatically retrieve and store the JSON files (associated with the tweets that include #NBAFinals2015 hashtag and the tweets that include #Warriors hashtag) returned by the twitter REST api in a MongoDB database called db_restT. 
 
-**Notes**: These are in files [1.1_acq.py](1.1_acq.py) and [1.2_s3tomongo.py](1.2_s3tomongo.py).  
-The first uses much of the code from Assignment 2, with the addition of a `MongoDBSink` in `sinks.py` to store tweets to a specified database and collection.  
+**Notes**: The code is in [1.2_s3tomongo.py](1.2_s3tomongo.py).  
 The second simply reads the files from S3 to a string, uses `json.loads` to read the contents into an array, and writes the tweets with `insert_many`.
 
 <a name='toc_2.2'></a>
