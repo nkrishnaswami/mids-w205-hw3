@@ -15,12 +15,12 @@
 2.3.1: [Backup & Restore](#toc_2.3.1)  
 3: [Resilience](#toc_3)
 
-# Database Dumps
+# 1: Database Dumps
 <a name='toc_1'></a>
 MongoDB dump files are in S3 bucket [nkrishna-mids205-hw3](https://s3.amazonaws.com/nkrishna-mids205-hw3)
 
 <a name='toc_2'></a>
-# Implementation Notes
+# 2: Implementation Notes
 This section reproduces (at an additional level of nesting) the contents of [proc.ipynb](proc.ipynb). See that ipython notebook for the code for this assignment.
 
 <a name='toc_2.1'></a>
@@ -107,7 +107,7 @@ For this assignment, I am using s3 bucket `nkrishna-mids205-hw3`.  I think I for
 Restoring will simply invert the steps: fetch the zipped BSON dumps, extract them, and call `mongorestore`
 Verify that the older sanity check still works.
 
-# Resilience:
+# 3: Resilience:
 There were a few key areas that needed special error handling:
 
 1. Tweepy would not retry error status 104.  So I added a `try`/`except` inside an infinite loop around each REST API call.  Should a 104 be encountered, the call would continue the infinite loop, effectively retrying a call for that cursor position while allowing Tweepy to reopen a connection.
