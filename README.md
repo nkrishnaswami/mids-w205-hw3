@@ -41,7 +41,7 @@ This reuses much of the code from Assignment 2, with the addition of a `MongoDBS
 > Write a python program to automatically retrieve and store the JSON files (associated with the tweets that include #NBAFinals2015 hashtag and the tweets that include #Warriors hashtag) returned by the twitter REST api in a MongoDB database called db_restT. 
 
 **Notes**: The code is in [1.2_s3tomongo.py](1.2_s3tomongo.py).  
-The second simply reads the files from S3 to a string, uses `json.loads` to read the contents into an array, and writes the tweets with `insert_many`.
+The second simply reads the files from S3 to a string, uses `json.loads` to read the contents into an array, and writes the tweets with pymongo's `insert_many` method.
 
 <a name='toc_2.2'></a>
 ## 2.2: Retrieving and Analyzing Tasks
