@@ -125,3 +125,6 @@ There were a few key areas that needed special error handling:
 
 <a name='toc_4'></a>
 # 4: Lexical Diversity
+For the plot, I chose to show the distribution of lexical diversity as
+a histogram.
+![lexical diversity histogram](lexdiv.png "Lexical Diversity")
